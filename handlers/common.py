@@ -107,14 +107,13 @@ async def process_unrecognized_input(message: Message):
     """
     Обрабатывает неподдерживаемые сообщения.
     """
-    error_gif = "https://media1.tenor.com/m/eBWplvjY4RUAAAAC/mi.gif"
+    error_gif = "https://media1.tenor.com/m/HwkPm6f1yzIAAAAC/yuimetal.gif"
 
     await message.answer_animation(
         animation=error_gif,
         caption=(
-            "К сожалению, я не распознал ваш запрос.\n\n"
-            "Пожалуйста, используйте кнопки навигации "
-            "или доступные команды меню."
+            "Запрос не распознан.\n\n"
+            "Используйте кнопки навигации "
         ),
         reply_markup=main_menu
     )
