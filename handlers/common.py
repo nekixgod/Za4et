@@ -59,7 +59,7 @@ async def display_user_profile(message: Message):
             parse_mode="HTML"
         )
 
-@router.message(F.text == "🎮 Развлечения")  # ИСПРАВЛЕНО!
+@router.message(F.text == "🎮 Развлечения") 
 async def present_games_selection(message: Message):
     """
     Отображает меню доступных игр.
