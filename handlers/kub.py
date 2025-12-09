@@ -63,7 +63,7 @@ async def evaluate_dice_prediction(message: Message):
         reply_markup=dice_game_menu,
         parse_mode="HTML"
     )
-@router.message(F.text == "◀️ К активности")  # ИЗМЕНЕНО
+@router.message(F.text == "◀️ К активности")  
 async def return_to_games_catalog(message: Message):
     """
     Возвращает пользователя к каталогу мини-игр.
@@ -73,7 +73,7 @@ async def return_to_games_catalog(message: Message):
         reply_markup=activities_menu
     )
 
-@router.message(F.text == "◀️ Основное меню")  # ИЗМЕНЕНО
+@router.message(F.text == "◀️ Основное меню") 
 async def navigate_to_main_screen(message: Message):
     """
     Перенаправляет пользователя на главный экран.
