@@ -60,7 +60,7 @@ async def process_player_move(message: Message):
         parse_mode="Markdown"
     )
 
-@router.message(F.text == "◀️ К активности")  
+@router.message(F.text == "◀️ К активности")  # ИЗМЕНЕНО
 async def return_to_games_list(message: Message):
     """
     Возвращает пользователя к выбору игр.
@@ -70,7 +70,7 @@ async def return_to_games_list(message: Message):
         reply_markup=activities_menu
     )
 
-@router.message(F.text == "◀️ Основное меню")  
+@router.message(F.text == "◀️ Основное меню")  # ИЗМЕНЕНО
 async def navigate_to_main_menu(message: Message):
     """
     Возвращает пользователя в главное меню.
