@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import sys
-from os import getenv
+import os
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -9,16 +9,27 @@ from aiogram.fsm.storage.memory import MemoryStorage
 # Импорт модулей обработчиков
 from handlers import auth, common, knb, kub, book
 
+# Импорт Redis клиента
+from utils.redis_client import RedisClient
+
 # Загрузка переменных окружения
 load_dotenv()
 
 # Получение токена бота
-BOT_TOKEN = getenv("BOT_TOKEN")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
     raise ValueError(
         "Токен не обнаружен! Убедитесь, что переменная BOT_TOKEN "
         "определена в файле .env"
     )
+
+# Настройка Redis
+REDIS_CONFIG = {
+    'host': os.getenv('REDIS_HOST', 'localhost'),
+    'port': int(os.getenv('REDIS_PORT', 6379)),
+    'db': int(os.getenv('REDIS_DB', 0)),
+    'password': os.getenv('REDIS_PASSWORD', None)
+}
 
 async def initialize_bot() -> None:
     """
@@ -33,6 +44,12 @@ async def initialize_bot() -> None:
     # Инициализация диспетчера
     dispatcher = Dispatcher(storage=state_storage)
 
+    # Инициализация Redis и добавление в контекст бота
+    redis_client = RedisClient(**REDIS_CONFIG)
+
+    # Сохраняем redis_client в данных бота для доступа из хендлеров
+    bot_instance.redis_client = redis_client
+
     # Регистрация всех роутеров
     dispatcher.include_router(auth.router)      # Авторизация и регистрация
     dispatcher.include_router(knb.router)       # Испытание элементов
@@ -45,8 +62,10 @@ async def initialize_bot() -> None:
 
     # Информационное сообщение о запуске
     logging.info("Bot Companion успешно активирован!")
+    logging.info(f"Redis подключен: {redis_client.is_connected()}")
     print("=" * 50)
     print("Система Bot Companion запущена и готова к работе")
+    print(f"Redis: {REDIS_CONFIG['host']}:{REDIS_CONFIG['port']}")
     print("Для остановки используйте комбинацию Ctrl+C")
     print("=" * 50)
 
